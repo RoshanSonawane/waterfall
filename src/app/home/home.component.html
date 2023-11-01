@@ -1,0 +1,439 @@
+<app-header></app-header>
+<div class="container selection mt-3">
+    <div class="row">
+        <div class="col-sm-3 select-date-header">
+            <div class="orange">Select Date Range :</div>
+        </div>
+        <div class="col-sm-9">
+            <div class="select-date-range-parent">
+                <div class="svgjssvg1001-parent" id="frameContainer7">
+                    <mat-form-field class="start-date-parent" appearance="outline">
+                        <mat-label>Enter date</mat-label>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
+                            <input matEndDate placeholder="End date" [(ngModel)]="endDate">
+                        </mat-date-range-input>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 select-date-header">
+            <div class="orange">Select Territory :</div>
+        </div>
+        <div class="col-sm-9">
+            <mat-form-field class="start-date-parent" appearance="outline">
+                <mat-label>Territory</mat-label>
+                <mat-select [(ngModel)]="geo" (selectionChange)="getOperatorList()">
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of toppingList"
+                        [value]="topping.id">{{topping.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 select-date-header">
+            <div class="orange">Select Operator :</div>
+        </div>
+        <div class="col-sm-9">
+            <mat-form-field class="start-date-parent" appearance="outline">
+                <mat-label>Operator</mat-label>
+                <mat-select [(ngModel)]="selectedOperator" (selectionChange)="getBillerList()">
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let operator of operatorList"
+                        [value]="operator.id">
+                        {{ operator.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 select-date-header">
+            <div class="orange">Select Biller :</div>
+        </div>
+        <div class="col-sm-9">
+            <mat-form-field class="start-date-parent" appearance="outline">
+                <mat-label *ngIf="billerList.length">Biller</mat-label>
+                <mat-label *ngIf="!billerList.length">No Biller Found</mat-label>
+                <mat-select [(ngModel)]="selectedOperatorlist" (selectionChange)="getMediaSourceList()">
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let biller of billerList"
+                        [value]="biller.billerid">{{biller}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 select-date-header">
+            <div class="orange">Select Media Source :</div>
+        </div>
+        <div class="col-sm-9">
+            <mat-form-field class="start-date-parent" appearance="outline">
+                <mat-label>Media Source</mat-label>
+                <mat-select>
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of mediaSource"
+                        [value]="topping">{{topping}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 select-date-header">
+            <div class="orange">Select Mode :</div>
+        </div>
+        <div class="col-sm-9">
+            <mat-form-field class="start-date-parent" appearance="outline">
+                <mat-label>Mode</mat-label>
+                <mat-select>
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of mode"
+                        [value]="topping">{{topping}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 select-date-header">
+            <div class="orange">Select Service :</div>
+        </div>
+        <div class="col-sm-9">
+            <mat-form-field class="start-date-parent" appearance="outline">
+                <mat-label>Service</mat-label>
+                <mat-select>
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of service"
+                        [value]="topping">{{topping}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="container text-center mt-3">
+        <div class="buttons">
+            <button mat-flat-button class="sub-btn" (click)="submitForm()">Submit</button>
+            <button mat-flat-button class="reset-btn" (click)="resetForm()">Reset</button>
+        </div>
+    </div>
+</div>
+<div class="table-one mt-3 me-5 ms-5">
+    <div class="container text-center p-2">
+        <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+                <h3 class="head2">Summary Output</h3>
+            </div>
+            <div class="col-4 text-end">
+                <!-- <button mat-flat-button class="sub-btn" (click)="resizeTable()">Resize</button> -->
+                <button matTooltip="Resize Table" class="resize-btn" (click)="resizeTable()" mat-mini-fab
+                    color="primary" aria-label="Example icon button with a menu icon">
+                    <mat-icon>aspect_ratio</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="table mt-3">
+            <jqxGrid style="font-size: 15px; font-family: 'Poppins'; padding: 0px !important;" [theme]="'material'"
+                #myGrid [columnsautoresize]="true" [autoheight]="true" [pageable]="false" [enabletooltips]="false"
+                [editable]="false" [columnsresize]="true" [width]="getWidth()" [source]="dataAdapter"
+                [columns]="columns">
+            </jqxGrid>
+        </div>
+    </div>
+</div>
+<div class="table-one mt-3 me-5 ms-5">
+    <div class="container text-center p-2">
+        <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+                <h3 class="head2">Orange</h3>
+            </div>
+            <div class="col-4 text-end">
+                <!-- <button mat-flat-button class="sub-btn" (click)="resizeTable()">Resize</button> -->
+
+                <button matTooltip="Excel Sheet" class="excel-btn" (click)="resizeTable()" mat-mini-fab color="primary"
+                    aria-label="Example icon button with a menu icon">
+                    <!-- <mat-icon>aspect_ratio</mat-icon> -->
+                    <img src="../../assets/img/excel-img.svg" alt="">
+                </button>
+
+                <button matTooltip="Bar Chart" class="pia-btn" (click)="resizeTable()" mat-mini-fab color="primary"
+                    aria-label="Example icon button with a menu icon">
+                    <!-- <mat-icon>aspect_ratio</mat-icon> -->
+                    <img src="../../assets/img/pia-img.svg" alt="">
+                </button>
+            </div>
+        </div>
+        <div class="table mt-3">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+
+                <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+                <!-- name Column -->
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                </ng-container>
+
+                <!-- Parked Column -->
+                <ng-container matColumnDef="parked">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Parked </th>
+                    <td mat-cell *matCellDef="let element"> {{element.parked}} </td>
+                </ng-container>
+
+                <!-- Charged Column -->
+                <ng-container matColumnDef="charged">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Charged </th>
+                    <td mat-cell *matCellDef="let element"> {{element.charged}} </td>
+                </ng-container>
+
+                <!-- Aquisition Column -->
+                <ng-container matColumnDef="totalAquisition">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Total Aquisition </th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalAquisition}} </td>
+                </ng-container>
+
+                <!-- Activation Revenue Column -->
+                <ng-container matColumnDef="netAquisition">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Net Activation Revenue </th>
+                    <td mat-cell *matCellDef="let element"> {{element.netAquisition}} </td>
+                </ng-container>
+
+                <!-- Cost Column -->
+                <ng-container matColumnDef="cost">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Cost </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
+                </ng-container>
+
+                <!-- FTR Column -->
+                <ng-container matColumnDef="ftr">
+                    <th mat-header-cell *matHeaderCellDef class="test"> FTR </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ftr}} </td>
+                </ng-container>
+
+                <!-- Renewal Revenue Column -->
+                <ng-container matColumnDef="renewalRevenue">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Renewal Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.renewalRevenue}} </td>
+                </ng-container>
+
+                <!-- Total Revenue Column -->
+                <ng-container matColumnDef="totalRevenue">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Total Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalRevenue}} </td>
+                </ng-container>
+
+                <!-- ROI Column -->
+                <ng-container matColumnDef="roi">
+                    <th mat-header-cell *matHeaderCellDef class="test"> %ROI </th>
+                    <td mat-cell *matCellDef="let element"> {{element.roi}} </td>
+                </ng-container>
+
+                <!-- Churn Column -->
+                <ng-container matColumnDef="churn">
+                    <th mat-header-cell *matHeaderCellDef class="test" class="test"> Churn </th>
+                    <td mat-cell *matCellDef="let element"> {{element.churn}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row" class="column-borders">
+                </tr>
+
+
+            </table>
+
+        </div>
+    </div>
+
+
+    <div class="container text-center p-2">
+        <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+                <h3 class="head2">Etisalat</h3>
+            </div>
+            
+        </div>
+        <div class="table mt-3">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+
+                <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+                <!-- name Column -->
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                </ng-container>
+
+                <!-- Parked Column -->
+                <ng-container matColumnDef="parked">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Parked </th>
+                    <td mat-cell *matCellDef="let element"> {{element.parked}} </td>
+                </ng-container>
+
+                <!-- Charged Column -->
+                <ng-container matColumnDef="charged">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Charged </th>
+                    <td mat-cell *matCellDef="let element"> {{element.charged}} </td>
+                </ng-container>
+
+                <!-- Aquisition Column -->
+                <ng-container matColumnDef="totalAquisition">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Total Aquisition </th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalAquisition}} </td>
+                </ng-container>
+
+                <!-- Activation Revenue Column -->
+                <ng-container matColumnDef="netAquisition">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Net Activation Revenue </th>
+                    <td mat-cell *matCellDef="let element"> {{element.netAquisition}} </td>
+                </ng-container>
+
+                <!-- Cost Column -->
+                <ng-container matColumnDef="cost">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Cost </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
+                </ng-container>
+
+                <!-- FTR Column -->
+                <ng-container matColumnDef="ftr">
+                    <th mat-header-cell *matHeaderCellDef class="test"> FTR </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ftr}} </td>
+                </ng-container>
+
+                <!-- Renewal Revenue Column -->
+                <ng-container matColumnDef="renewalRevenue">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Renewal Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.renewalRevenue}} </td>
+                </ng-container>
+
+                <!-- Total Revenue Column -->
+                <ng-container matColumnDef="totalRevenue">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Total Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalRevenue}} </td>
+                </ng-container>
+
+                <!-- ROI Column -->
+                <ng-container matColumnDef="roi">
+                    <th mat-header-cell *matHeaderCellDef class="test"> %ROI </th>
+                    <td mat-cell *matCellDef="let element"> {{element.roi}} </td>
+                </ng-container>
+
+                <!-- Churn Column -->
+                <ng-container matColumnDef="churn">
+                    <th mat-header-cell *matHeaderCellDef class="test" class="test"> Churn </th>
+                    <td mat-cell *matCellDef="let element"> {{element.churn}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row" class="column-borders">
+                </tr>
+
+
+            </table>
+
+        </div>
+    </div>
+
+    <div class="container text-center p-2">
+        <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+                <h3 class="head2">WE</h3>
+            </div>
+
+        </div>
+        <div class="table mt-3">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+
+                <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+                <!-- name Column -->
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                </ng-container>
+
+                <!-- Parked Column -->
+                <ng-container matColumnDef="parked">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Parked </th>
+                    <td mat-cell *matCellDef="let element"> {{element.parked}} </td>
+                </ng-container>
+
+                <!-- Charged Column -->
+                <ng-container matColumnDef="charged">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Charged </th>
+                    <td mat-cell *matCellDef="let element"> {{element.charged}} </td>
+                </ng-container>
+
+                <!-- Aquisition Column -->
+                <ng-container matColumnDef="totalAquisition">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Total Aquisition </th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalAquisition}} </td>
+                </ng-container>
+
+                <!-- Activation Revenue Column -->
+                <ng-container matColumnDef="netAquisition">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Net Activation Revenue </th>
+                    <td mat-cell *matCellDef="let element"> {{element.netAquisition}} </td>
+                </ng-container>
+
+                <!-- Cost Column -->
+                <ng-container matColumnDef="cost">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Cost </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
+                </ng-container>
+
+                <!-- FTR Column -->
+                <ng-container matColumnDef="ftr">
+                    <th mat-header-cell *matHeaderCellDef class="test"> FTR </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ftr}} </td>
+                </ng-container>
+
+                <!-- Renewal Revenue Column -->
+                <ng-container matColumnDef="renewalRevenue">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Renewal Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.renewalRevenue}} </td>
+                </ng-container>
+
+                <!-- Total Revenue Column -->
+                <ng-container matColumnDef="totalRevenue">
+                    <th mat-header-cell *matHeaderCellDef class="test"> Total Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalRevenue}} </td>
+                </ng-container>
+
+                <!-- ROI Column -->
+                <ng-container matColumnDef="roi">
+                    <th mat-header-cell *matHeaderCellDef class="test"> %ROI </th>
+                    <td mat-cell *matCellDef="let element"> {{element.roi}} </td>
+                </ng-container>
+
+                <!-- Churn Column -->
+                <ng-container matColumnDef="churn">
+                    <th mat-header-cell *matHeaderCellDef class="test" class="test"> Churn </th>
+                    <td mat-cell *matCellDef="let element"> {{element.churn}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row" class="column-borders">
+                </tr>
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
