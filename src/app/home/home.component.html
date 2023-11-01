@@ -63,7 +63,7 @@
                 <mat-label *ngIf="!billerList.length">No Biller Found</mat-label>
                 <mat-select [(ngModel)]="selectedOperatorlist" (selectionChange)="getMediaSourceList()">
                     <mat-option style="font-family: 'Poppins';" *ngFor="let biller of billerList"
-                        [value]="biller.billerid">{{biller}}</mat-option>
+                        [value]="biller">{{biller}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -77,8 +77,8 @@
             <mat-form-field class="start-date-parent" appearance="outline">
                 <mat-label>Media Source</mat-label>
                 <mat-select>
-                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of mediaSource"
-                        [value]="topping">{{topping}}</mat-option>
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let media of medialist"
+                        [value]="media.id">{{media.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

@@ -198,7 +198,7 @@ export class HomeComponent implements OnInit {
   selectedOperator: any ;
   operatorList: any[] = []; // Assuming operatorList is an array of objects with 'id' property.
   selectedOperatorlist: string[] = []; // If you have a list for selected operators.
-serviceData:any;
+serviceData:any={operatorid:null,billerName:null};
 medialist:any;
 
   constructor(private api: ApiService) { }
@@ -277,21 +277,21 @@ medialist:any;
   getMediaSourceList() {
 
     if (this.selectedOperator === 'all') {
-      this.serviceData = this.operatorList.map(operator => operator.id).join(',');
-      this.serviceData.operatorid = this.serviceData.replace('all,', '');
+      let sddd = this.operatorList.map(operator => operator.id).join(',');
+      this.serviceData.operatorid = sddd.replace('all,', '');
     } 
     else{
       
       this.serviceData.operatorid = this.selectedOperator;
 
     }
-    this.serviceData.billerName = this.billerList;
+    this.serviceData.billerName = this.selectedOperatorlist;
     console.log("mmmmmmmmm:", this.serviceData);
-
-  //  this.api.getMediaSource(this.serviceData,this.biller).subscribe((mediaSource:any)=>{
-  //   this.medialist = mediaSource;
-  //   console.log("mmmmdddddd",this.medialist)
-  //  })
+    
+   this.api.getMediaSource(this.serviceData).subscribe((mediaSource:any)=>{
+    this.medialist = mediaSource;
+    console.log("mmmmdddddd",this.medialist)
+   })
 
   }
 
