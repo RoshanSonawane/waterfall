@@ -29,18 +29,16 @@ export class ApiService {
     return this.http.post('http://wap.matrixads.in/mglobopay/getBillerListByOperatorId', body)
   }
 
-  //   getMediaSource(data:any) {
-  //   var body = { operatorid: id, billerName: biller }; // Assuming your server expects data in this format
-  //   return this.http.post('http://wap.matrixads.in/mglobopay/getMediaListByOperatorIdAndBillerName', data)
-  // }
-  getMediaSource(data:any) {
-    
+
+  getMediaSource(data: any) {
+
     // Assuming your server expects data in this format
-   
-    return this.http.post('http://wap.matrixads.in/mglobopay/getMediaListByOperatorIdAndBillerName',{
-      "operatorid" : data.operatorid,
-      "billerName" : data.billerName
-  })
+
+    console.log("MediaSource API", "" + "'" + data.billerName + "'" + "")
+    return this.http.post('http://wap.matrixads.in/mglobopay/getMediaListByOperatorIdAndBillerName', {
+      "operatorid": data.operatorid,
+      "billerName": "" + "'" + data.billerName + "'" + ""
+    })
 
   }
 

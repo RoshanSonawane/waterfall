@@ -28,9 +28,9 @@
         <div class="col-sm-9">
             <mat-form-field class="start-date-parent" appearance="outline">
                 <mat-label>Territory</mat-label>
-                <mat-select [(ngModel)]="geo" (selectionChange)="getOperatorList()">
-                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of toppingList"
-                        [value]="topping.id">{{topping.name}}</mat-option>
+                <mat-select [(ngModel)]="territory" (selectionChange)="getOperatorList()">
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let terretory of terretoryList"
+                        [value]="terretory.id">{{terretory.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -78,7 +78,7 @@
                 <mat-label>Media Source</mat-label>
                 <mat-select>
                     <mat-option style="font-family: 'Poppins';" *ngFor="let media of medialist"
-                        [value]="media.id">{{media.name}}</mat-option>
+                        [value]="media">{{media}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -92,8 +92,8 @@
             <mat-form-field class="start-date-parent" appearance="outline">
                 <mat-label>Mode</mat-label>
                 <mat-select>
-                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of mode"
-                        [value]="topping">{{topping}}</mat-option>
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let mode of modeList"
+                        [value]="mode">{{mode}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

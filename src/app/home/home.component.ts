@@ -189,17 +189,18 @@ export class HomeComponent implements OnInit {
   biller: string[] = [''];
   operator: string[] = [''];
   mediaSource: string[] = [''];
-  mode: string[] = ['GOOGLE', 'WAP', 'INAPP'];
+  modeList: string[] = ['GOOGLE', 'WAP', 'INAPP'];
+  mode!: any;
   service: string[] = [''];
   toppings = new FormControl('');
-  geo!: string;
-  toppingList: any;
-  billerList: any[]=[];
-  selectedOperator: any ;
+  territory!: string;
+  terretoryList: any;
+  billerList: any[] = [];
+  selectedOperator: any;
   operatorList: any[] = []; // Assuming operatorList is an array of objects with 'id' property.
   selectedOperatorlist: string[] = []; // If you have a list for selected operators.
-serviceData:any={operatorid:null,billerName:null};
-medialist:any;
+  serviceData: any = { operatorid: null, billerName: null };
+  medialist: any;
 
   constructor(private api: ApiService) { }
 
@@ -230,9 +231,9 @@ medialist:any;
   territoryData() {
 
     this.api.getTerritories().subscribe((territories: any[]) => {
-      this.toppingList = territories;
+      this.terretoryList = territories;
 
-      console.log('teerrrr:', this.toppingList)
+      console.log('terretory list=====:', this.terretoryList)
     },
       (error) => {
         console.error('Error fetching territories: ', error);
@@ -244,7 +245,7 @@ medialist:any;
 
   getOperatorList() {
 
-    this.api.getOperator(this.geo).subscribe((operatorResponce: any) => {
+    this.api.getOperator(this.territory).subscribe((operatorResponce: any) => {
       this.operatorList = operatorResponce;
       console.log("operator list====", this.operatorList)
       this.operatorList = [
@@ -257,17 +258,17 @@ medialist:any;
   }
 
   getBillerList() {
-    let data 
+    let Billerdata
     if (this.selectedOperator === 'all') {
-      data = this.operatorList.map(operator => operator.id).join(',');
-      data = data.replace('all,', '');
-    } 
-    else{
-      data = this.selectedOperator;
+      Billerdata = this.operatorList.map(operator => operator.id).join(',');
+      Billerdata = Billerdata.replace('all,', '');
     }
-    console.log("Selected Operator:", data);
+    else {
+      Billerdata = this.selectedOperator;
+    }
+    console.log("Selected Operator:", Billerdata);
 
-    this.api.getBillers(data).subscribe((billerResponce: any) => {
+    this.api.getBillers(Billerdata).subscribe((billerResponce: any) => {
       this.billerList = billerResponce;
       console.log("getBillers======:", this.billerList);
 
@@ -277,21 +278,19 @@ medialist:any;
   getMediaSourceList() {
 
     if (this.selectedOperator === 'all') {
-      let sddd = this.operatorList.map(operator => operator.id).join(',');
-      this.serviceData.operatorid = sddd.replace('all,', '');
-    } 
-    else{
-      
+      let mediaSource = this.operatorList.map(operator => operator.id).join(',');
+      this.serviceData.operatorid = mediaSource.replace('all,', '');
+    }
+    else {
       this.serviceData.operatorid = this.selectedOperator;
-
     }
     this.serviceData.billerName = this.selectedOperatorlist;
-    console.log("mmmmmmmmm:", this.serviceData);
-    
-   this.api.getMediaSource(this.serviceData).subscribe((mediaSource:any)=>{
-    this.medialist = mediaSource;
-    console.log("mmmmdddddd",this.medialist)
-   })
+    console.log("operatorId BillerName=======", this.serviceData);
+
+    this.api.getMediaSource(this.serviceData).subscribe((mediaSource: any) => {
+      this.medialist = mediaSource;
+      console.log("Media Source ======", this.medialist)
+    })
 
   }
 
@@ -301,7 +300,7 @@ medialist:any;
   resetForm() {
     this.startDate = '';
     this.endDate = '';
-    this.geo = '';
+    this.territory = '';
     this.biller = [];
     this.operator = [];
     this.mediaSource = [];
@@ -313,7 +312,7 @@ medialist:any;
     const formData = {
       StartDate: this.startDate,
       EndDate: this.endDate,
-      Geo: this.geo,
+      territory: this.territory,
       Biller: this.biller,
       Operator: this.operator,
       Mode: this.mode,
