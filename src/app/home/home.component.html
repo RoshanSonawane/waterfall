@@ -28,7 +28,7 @@
         <div class="col-sm-9">
             <mat-form-field class="start-date-parent" appearance="outline">
                 <mat-label>Territory</mat-label>
-                <mat-select [(ngModel)]="territory" (selectionChange)="getOperatorList()">
+                <mat-select [(ngModel)]="territory" (selectionChange)="getOperatorList(); operatorList = []; billerList = []; medialist = [];  serviceList = []; ">
                     <mat-option style="font-family: 'Poppins';" *ngFor="let terretory of terretoryList"
                         [value]="terretory.id">{{terretory.name}}</mat-option>
                 </mat-select>
@@ -43,7 +43,7 @@
         <div class="col-sm-9">
             <mat-form-field class="start-date-parent" appearance="outline">
                 <mat-label>Operator</mat-label>
-                <mat-select [(ngModel)]="selectedOperator" (selectionChange)="getBillerList()">
+                <mat-select [(ngModel)]="selectedOperator" (selectionChange)="getBillerList(); billerList = []; medialist = [];  serviceList = [];">
                     <mat-option style="font-family: 'Poppins';" *ngFor="let operator of operatorList"
                         [value]="operator.id">
                         {{ operator.name }}
@@ -61,7 +61,7 @@
             <mat-form-field class="start-date-parent" appearance="outline">
                 <mat-label *ngIf="billerList.length">Biller</mat-label>
                 <mat-label *ngIf="!billerList.length">No Biller Found</mat-label>
-                <mat-select [(ngModel)]="selectedOperatorlist" (selectionChange)="getMediaSourceList()">
+                <mat-select [(ngModel)]="selectedOperatorlist" (selectionChange)="getMediaSourceList();  medialist = [];  serviceList = [];">
                     <mat-option style="font-family: 'Poppins';" *ngFor="let biller of billerList"
                         [value]="biller">{{biller}}</mat-option>
                 </mat-select>
@@ -106,8 +106,8 @@
             <mat-form-field class="start-date-parent" appearance="outline">
                 <mat-label>Service</mat-label>
                 <mat-select>
-                    <mat-option style="font-family: 'Poppins';" *ngFor="let topping of service"
-                        [value]="topping">{{topping}}</mat-option>
+                    <mat-option style="font-family: 'Poppins';" *ngFor="let service of serviceList"
+                        [value]="service.serviceId">{{service.serviceName}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -261,7 +261,7 @@
             <div class="col-4">
                 <h3 class="head2">Etisalat</h3>
             </div>
-            
+
         </div>
         <div class="table mt-3">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">

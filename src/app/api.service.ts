@@ -40,6 +40,11 @@ export class ApiService {
       "billerName": "" + "'" + data.billerName + "'" + ""
     })
 
+
+  }
+
+  getSelectServiceList(data: any) {
+    return this.http.post('http://wap.matrixads.in/mglobopay/getServiceListByOperatorIdAndBillerName', data);
   }
 
 
